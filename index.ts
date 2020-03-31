@@ -26,7 +26,7 @@ import {ReportingTaskBuilder} from "./src/NiFiObjectBuilder/ReportingTaskBuilder
 import {RevisionBuilder} from "./src/NiFiObjectBuilder/RevisionBuilder";
 import {SnippetBuilder} from "./src/NiFiObjectBuilder/SnippetBuilder";
 import {TemplateBuilder} from "./src/NiFiObjectBuilder/TemplateBuilder";
-import {ConnectionRequestHandler} from "./src/NiFiRequestSender/ConnectionRequestHandler/ConnectionRequestHandler";
+import {ConnectionRequestHandler} from "./src/NiFiRequestSender/ConnectionRequestHandler/IConnectionRequestHandler";
 import {ControllerRequestHandler} from "./src/NiFiRequestSender/ControllerRequestHandler/ControllerRequestHandler";
 import {ControllerServiceRequestHandler} from "./src/NiFiRequestSender/ControllerSerivceRequestHandler/ControllerServiceRequestHandler";
 import {FlowFileQueueRequestHandler} from "./src/NiFiRequestSender/FlowFileQueueRequestHandler/FlowFileQueueRequestHandler";

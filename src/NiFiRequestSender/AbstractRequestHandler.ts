@@ -1,5 +1,6 @@
 import {RequestSender} from "./RequestSender";
 import {isNullOrUndefined} from "util";
+import { DeleteOptionsType } from "../NiFiObjects/Types/DeleteOptionsType";
 
 export class AbstractRequestHandler {
     constructor(protected requestSender: RequestSender) {
@@ -36,6 +37,22 @@ export class AbstractRequestHandler {
         }
 
         return options;
+    }
+
+    protected AddDeleteOptions(path: string, deleteOptions?:DeleteOptionsType) {
+        if (deleteOptions) {
+            path.concat("?")
+            if (deleteOptions.version) {
+                path.concat(`version=${deleteOptions.version}&`)
+            }
+            if (deleteOptions.clientId) {
+                path.concat(`clientId=${deleteOptions.clientId}&`)
+            }
+            if (deleteOptions.disconnectedNodeAcknowledged) { //this condition fails if disconnectedNodeAcknowledged is set to false, but if it's set to false it doesn't need to be included anyway
+                path.concat(`disconnectedNodeAcknowledged=${deleteOptions.disconnectedNodeAcknowledged}`)
+            }
+        }
+        return path;
     }
 
 }
