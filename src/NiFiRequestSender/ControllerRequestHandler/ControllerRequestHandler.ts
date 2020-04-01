@@ -1,23 +1,44 @@
-import {AbstractRequestHandler} from "../AbstractRequestHandler";
+import {IControllerRequestHandler} from "./IControllerRequestHandler";
 import {ControllerServiceType} from "../../NiFiObjects/Types/ControllerService/ControllerServiceType";
-import {RegistryType} from "../../NiFiObjects/Types/Registry/RegistryType";
 import {ReportingTaskType} from "../../NiFiObjects/Types/ReportingTaskType";
 import {RegistryClientEntityType} from "../../NiFiObjects/Types/Registry/RegistryClientEntityType";
+import { AbstractRequestHandler } from "../AbstractRequestHandler";
 
-export abstract class ControllerRequestHandler extends AbstractRequestHandler {
-    public abstract async createControllerService(controllerService: ControllerServiceType): Promise<ControllerServiceType>;
+export class ControllerRequestHandler extends AbstractRequestHandler implements IControllerRequestHandler {
 
-    public abstract async createRegistryClient(registryClient: RegistryClientEntityType): Promise<RegistryClientEntityType>;
+    private url = `/controller`;
 
-    public abstract async getRegistries(): Promise<RegistryClientEntityType[]>;
+    async createControllerService(controllerService: ControllerServiceType): Promise<ControllerServiceType> {
+        let result = await this.Post(this.url +`/controller-services`, controllerService);
+        return  result["component"] as ControllerServiceType;
+    }
 
-    public abstract async getRegistryClientById(id: string): Promise<RegistryClientEntityType>;
+    async createRegistryClient(registryClient: RegistryClientEntityType): Promise<RegistryClientEntityType> {
+        return await this.Post(this.url +`/registry-clients`, registryClient) as RegistryClientEntityType;
+    }
 
-    public abstract async updateRegistryClient(id: string): Promise<RegistryClientEntityType>;
+    async createReportingTask(reportingTask: ReportingTaskType): Promise<ReportingTaskType> {
+        let result = await this.Post(this.url +`/reporting-tasks`, reportingTask);
+        return result["component"] as ReportingTaskType
+    }
 
-    public abstract async deleteRegistryClient(id: string): Promise<RegistryClientEntityType>;
+    async deleteRegistryClient(id: string): Promise<RegistryClientEntityType> {
+        return await this.Delete(this.url +`/registry-clients/${id}`) as RegistryClientEntityType;
+    }
 
-    public abstract async createReportingTask(reportingTask: ReportingTaskType): Promise<ReportingTaskType>
+    async getRegistryClientById(id: string): Promise<RegistryClientEntityType> {
+        return await this.Get(this.url +`/registry-clients/${id}`) as RegistryClientEntityType;
+
+    }
+
+    async getRegistries(): Promise<RegistryClientEntityType[]> {
+        let result = await this.Get(this.url +`/registry-clients`);
+        return result['registries'] as RegistryClientEntityType[]
+    }
+
+    async updateRegistryClient(id: string, registryClient: RegistryClientEntityType): Promise<RegistryClientEntityType> {
+        return await this.Put(this.url +`/registry-clients/${id}`, registryClient) as RegistryClientEntityType;
+    }
 
 
 }

@@ -1,7 +1,7 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
+import {IControllerRequestHandler} from "../../../src/NiFiRequestSender/ControllerRequestHandler/IControllerRequestHandler";
 import {ControllerRequestHandler} from "../../../src/NiFiRequestSender/ControllerRequestHandler/ControllerRequestHandler";
-import {DefaultControllerRequestHandler} from "../../../src/NiFiRequestSender/ControllerRequestHandler/DefaultControllerRequestHandler";
 import {ControllerServiceGenerator} from "../../NiFiObjectGenerator/ControllerService/ControllerServiceGenerator";
 import {RegistryClientEntityGenerator} from "../../NiFiObjectGenerator/Registry/RegistryClientEntityGenerator";
 import {ReportingTaskGenerator} from "../../NiFiObjectGenerator/ReportingTaskGenerator";
@@ -16,12 +16,12 @@ const expect = chai.expect;
 describe('DefaultControllerRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let controllerRequestHandler: ControllerRequestHandler;
+    let controllerRequestHandler: IControllerRequestHandler;
 
     before('init ControllerRequestHandler', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        controllerRequestHandler = new DefaultControllerRequestHandler(requestSender);
+        controllerRequestHandler = new ControllerRequestHandler(requestSender);
     });
 
     afterEach('Clean Nock', () => {
