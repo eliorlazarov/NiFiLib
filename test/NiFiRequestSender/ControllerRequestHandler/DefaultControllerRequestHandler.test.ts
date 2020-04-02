@@ -202,7 +202,7 @@ describe('DefaultControllerRequestHandler Test', () => {
 
             //Act
             nock(mockUrl).persist().put(`/controller/registry-clients/${registryClientEntity.getId()}`).reply(200, response);
-            let responseRegistryClientEntity = await controllerRequestHandler.updateRegistryClient(registryClientEntity.getId());
+            let responseRegistryClientEntity = await controllerRequestHandler.updateRegistryClient(registryClientEntity.getId()); // TODO: fix test so that a registry client object is generated
 
             //Assert
             expect(responseRegistryClientEntity.id).to.be.equal(registryClientEntity.getId());

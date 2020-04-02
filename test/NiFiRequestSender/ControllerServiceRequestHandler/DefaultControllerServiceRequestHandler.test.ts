@@ -1,7 +1,7 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
+import {IControllerServiceRequestHandler} from "../../../src/NiFiRequestSender/ControllerSerivceRequestHandler/IControllerServiceRequestHandler";
 import {ControllerServiceRequestHandler} from "../../../src/NiFiRequestSender/ControllerSerivceRequestHandler/ControllerServiceRequestHandler";
-import {DefaultControllerServiceRequestHandler} from "../../../src/NiFiRequestSender/ControllerSerivceRequestHandler/DefaultControllerServiceRequestHandler";
 import {ControllerServiceEntityGenerator} from "../../NiFiObjectGenerator/ControllerService/ControllerServiceEntityGenerator";
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
 import {ControllerServiceType} from "../../../src/NiFiObjects/Types/ControllerService/ControllerServiceType";
@@ -18,7 +18,7 @@ const expect = chai.expect;
 describe('DefaultControllerRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let controllerServiceRequestHandler: ControllerServiceRequestHandler;
+    let controllerServiceRequestHandler: IControllerServiceRequestHandler;
     let revision: RevisionType;
     let component: ControllerServiceType;
     let controllerServiceEntity: ControllerServiceEntity;
@@ -26,7 +26,7 @@ describe('DefaultControllerRequestHandler Test', () => {
     before('init ControllerServiceRequestHandler', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        controllerServiceRequestHandler = new DefaultControllerServiceRequestHandler(requestSender);
+        controllerServiceRequestHandler = new ControllerServiceRequestHandler(requestSender);
         controllerServiceEntity = new ControllerServiceEntityGenerator().generate();
         component = controllerServiceEntity.getComponent();
         revision = controllerServiceEntity.getRevision();
