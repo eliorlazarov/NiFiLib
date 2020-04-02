@@ -1,9 +1,24 @@
-import {AbstractRequestHandler} from "../AbstractRequestHandler";
+import {IFlowFileQueueRequestHandler} from "./IFlowFileQueueRequestHandler";
+import { AbstractRequestHandler } from "../AbstractRequestHandler";
 
-export abstract class FlowFileQueueRequestHandler extends AbstractRequestHandler {
-    public abstract async getFlowFileQueueDropStatus(id: string): Promise<object>
+export class FlowFileQueueRequestHandler extends AbstractRequestHandler implements IFlowFileQueueRequestHandler {
 
-    public abstract async getDropRequest(fatherId: string, dropId: string): Promise<object>
+    url = `/flowfile-queues`;
 
-    public abstract async emptyQueue(id: string): Promise<object>
+    //Todo: encodeUri
+    async emptyQueue(id: string): Promise<object> {
+        let result = await this.Post(this.url + `/${id}/drop-requests`);
+        return result['DropRequest'] as object;
+    }
+
+    //Todo: encodeUri
+    async getDropRequest(fatherId: string, dropId: string): Promise<object> {
+        let result = await this.Get(this.url + `/${fatherId}/drop-requests/${dropId}`);
+        return result['DropRequest'] as object;
+    }
+
+    async getFlowFileQueueDropStatus(id: string): Promise<object> {
+        return await this.Get(this.url + `/${id}`) as object;
+    }
+
 }
