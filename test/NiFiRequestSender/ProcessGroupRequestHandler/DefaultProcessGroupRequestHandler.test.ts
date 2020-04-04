@@ -1,9 +1,9 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
-import {ProcessGroupRequestHandler} from "../../../src/NiFiRequestSender/ProcessGroupRequestHandler/ProcessGroupRequestHandler";
+import {IProcessGroupRequestHandler} from "../../../src/NiFiRequestSender/ProcessGroupRequestHandler/IProcessGroupRequestHandler";
 import {ProcessGroupEntity} from "../../../src/NiFiObjects/ProcessGroup/ProcessGroupEntity";
-import {DefaultProcessGroupRequestHandler} from "../../../src/NiFiRequestSender/ProcessGroupRequestHandler/DefaultProcessGroupRequestHandler";
+import {ProcessGroupRequestHandler} from "../../../src/NiFiRequestSender/ProcessGroupRequestHandler/ProcessGroupRequestHandler";
 import {ProcessGroupEntityGenerator} from "../../NiFiObjectGenerator/ProcessGroup/ProcessGroupEntityGenerator";
 import {ConnectionEntityGenerator} from "../../NiFiObjectGenerator/Connection/ConnectionEntityGenerator";
 import {ConnectionEntity} from "../../../src/NiFiObjects/Connection/ConnectionEntity";
@@ -27,13 +27,13 @@ const expect = chai.expect;
 describe('DefaultProcessGroupRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let processGroupRequestHandler: ProcessGroupRequestHandler;
+    let processGroupRequestHandler: IProcessGroupRequestHandler;
     let processGroupEntity: ProcessGroupEntity;
     let revision: RevisionType;
     before('init LabelRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        processGroupRequestHandler = new DefaultProcessGroupRequestHandler(requestSender);
+        processGroupRequestHandler = new ProcessGroupRequestHandler(requestSender);
         processGroupEntity = new ProcessGroupEntityGenerator().generate();
         revision = processGroupEntity.revision;
 
@@ -353,7 +353,7 @@ describe('DefaultProcessGroupRequestHandler Test', () => {
 
             //Act
             nock(mockUrl).persist().post(`/process-groups/${processGroupEntity.getId()}/template-instance`).reply(200, response);
-            let responseTemplateInstance = await processGroupRequestHandler.templateInstance(processGroupEntity.getId(), templateId, processGroupEntity.position.x, processGroupEntity.position.y);
+            let responseTemplateInstance = await processGroupRequestHandler.createTemplateInstance(processGroupEntity.getId(), templateId, processGroupEntity.position.x, processGroupEntity.position.y);
 
             //Assert
             expect(responseTemplateInstance).to.be.deep.equal(response);
