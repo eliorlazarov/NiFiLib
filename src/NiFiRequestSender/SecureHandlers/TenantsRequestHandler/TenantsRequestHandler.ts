@@ -1,18 +1,67 @@
+import {ITenantsRequestHandler} from "./ITenantsRequestHandler";
 import {UserGroupEntityType} from "../../../NiFiObjects/Types/SecureTypes/UserGroup/UserGroupEntityType";
-import {AbstractRequestHandler} from "../../AbstractRequestHandler";
+import {isNullOrUndefined} from "util";
+import { AbstractRequestHandler } from "../../AbstractRequestHandler";
 
-export abstract class TenantsRequestHandler extends AbstractRequestHandler {
+export class TenantsRequestHandler extends AbstractRequestHandler implements ITenantsRequestHandler {
 
-    public abstract createUser(username: string, permissions?: object): Promise<string>
+    url = `/tenants`;
 
-    public abstract getGroup(groupId: string): Promise<UserGroupEntityType>
+    async createGroup(groupName: string, users: object[]): Promise<string> {
+        let body = {
+            revision: {
+                version: 0
+            },
+            component: {
+                identity: groupName,
+                users: users
+            }
+        };
+        let result = await this.Post(this.url + `/user-groups`, body);
+        return result['id'] as string;
+    }
 
-    public abstract updateGroup(groupId: string, groupName: string, users: Array<object>, accessPolicies: object[], version: number): Promise<UserGroupEntityType>
+    async createUser(username: string, permissions?: object): Promise<string> {
+        let body = {
+            revision: {
+                version: 0
+            },
+            component: {
+                identity: username
+            }
+        };
+        if (!isNullOrUndefined(permissions)) {
+            body['permissions'] = permissions
+        }
+        let result = await this.Post(this.url + `/users`, body);
+        return result['id'] as string
+    }
 
-    public abstract createGroup(groupName: string, users: object[]): Promise<string>
+    async getGroup(groupId: string): Promise<UserGroupEntityType> {
+        return await this.Get(this.url + `/user-groups/${groupId}`) as UserGroupEntityType;
+    }
 
-    public abstract getSearchResults(query: string): Promise<object>
+    async getSearchResults(query: string): Promise<object> {
+        return await this.Get(this.url + `/search-results?q=${encodeURIComponent(query)}`) as object;
+    }
 
-    // public abstract queryUsers(query: string): Promise<object>
+    //Todo: check if needed
+    // async queryUsers(query: string): Promise<object> {
+    //     return await this.Get(this.url + `/search-results?q=${query}`) as object;
+    // }
+
+    async updateGroup(groupId: string, groupName: string, users: object[], accessPolicies: Array<object>, version: number): Promise<UserGroupEntityType> {
+        let body = {
+            revision: {
+                version: version
+            }, component: {
+                id: groupId,
+                identity: groupName,
+                users: users,
+                accessPolicies: accessPolicies
+            }
+        };
+        return await this.Put(this.url + `/user-groups/${groupId}`, body) as UserGroupEntityType;
+    }
 
 }
