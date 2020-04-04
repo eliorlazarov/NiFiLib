@@ -3,8 +3,8 @@ import chaiAsPromised = require('chai-as-promised');
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
 import {PortEntityGenerator} from "../../NiFiObjectGenerator/Port/PortEntityGenerator";
 import {PortEntity} from "../../../src/NiFiObjects/Port/PortEntity";
-import {DefaultInputPortsRequestHandler} from "../../../src/NiFiRequestSender/InputPortsRequestHandler/DefaultInputPortsRequestHandler";
 import {InputPortsRequestHandler} from "../../../src/NiFiRequestSender/InputPortsRequestHandler/InputPortsRequestHandler";
+import {IInputPortsRequestHandler} from "../../../src/NiFiRequestSender/InputPortsRequestHandler/IInputPortsRequestHandler";
 import {PortType} from "../../../src/NiFiObjects/Types/Port/PortType";
 
 
@@ -17,13 +17,13 @@ const expect = chai.expect;
 describe('DefaultInputPortsRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;  
-    let inputPortsRequestHandler: InputPortsRequestHandler;
+    let inputPortsRequestHandler: IInputPortsRequestHandler;
     let portEntity: PortEntity;
     let revision: RevisionType;
     before('init InputPortsRequestHandler', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        inputPortsRequestHandler = new DefaultInputPortsRequestHandler(requestSender);
+        inputPortsRequestHandler = new InputPortsRequestHandler(requestSender);
         portEntity = new PortEntityGenerator().generate();
         revision = portEntity.revision;
 

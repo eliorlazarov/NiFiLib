@@ -1,9 +1,25 @@
-import {AbstractRequestHandler} from "../AbstractRequestHandler";
+import {IInputPortsRequestHandler} from "./IInputPortsRequestHandler";
 import {PortEntityType} from "../../NiFiObjects/Types/Port/PortEntityType";
+import { AbstractRequestHandler } from "../AbstractRequestHandler";
 
-export abstract class InputPortsRequestHandler extends AbstractRequestHandler {
-    public abstract async getInputPort(id: string): Promise<PortEntityType>
+export class InputPortsRequestHandler extends AbstractRequestHandler implements IInputPortsRequestHandler {
+    url = `/input-ports`;
 
-    public abstract async changeInputPortState(id: string, state: string, version: number): Promise<PortEntityType>
+    async changeInputPortState(id: string, state: string, version: number): Promise<PortEntityType> {
+        let body = {
+            "component": {
+                "id": id,
+                "state": state
+            },
+            "revision": {
+                "version": version
+            }
+        };
+        return await this.Put(this.url + `/${id}`, body) as PortEntityType;
+    }
+
+    async getInputPort(id: string): Promise<PortEntityType> {
+        return await this.Get(this.url + `/${id}`) as PortEntityType;
+    }
 
 }
