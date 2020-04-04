@@ -1,10 +1,16 @@
-import {AbstractRequestHandler} from "../AbstractRequestHandler";
+import {ISystemDiagnosticsRequestHandler} from "./ISystemDiagnosticsRequestHandler";
+import {GlobalUtils} from "../../utils/globalUtils";
+import { AbstractRequestHandler } from "../AbstractRequestHandler";
 
-export abstract class SystemDiagnosticsRequestHandler extends AbstractRequestHandler {
+export class SystemDiagnosticsRequestHandler extends AbstractRequestHandler implements ISystemDiagnosticsRequestHandler {
 
-    public abstract async getSystemDiagnostics(): Promise<object>
-    public abstract async getSystemDiagnostics(nodeWise: boolean): Promise<object>
-    public abstract async getSystemDiagnostics(nodeWise?: boolean): Promise<object>
+    url = `/system-diagnostics`;
 
+    
+    async getSystemDiagnostics(nodeWise?: boolean): Promise<object> {
+        nodeWise = !!nodeWise
+        let result = await this.Get(this.url + `?nodewise=${JSON.stringify(nodeWise)}`);
+        return result['systemDiagnostics'] as object
+    }
 
 }

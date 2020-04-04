@@ -1,8 +1,8 @@
 import chaiAsPromised = require('chai-as-promised');
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import {GlobalOperations} from "../../globalOperations";
+import {ISystemDiagnosticsRequestHandler} from "../../../src/NiFiRequestSender/SystemDiagnosticsRequestHandler/ISystemDiagnosticsRequestHandler";
 import {SystemDiagnosticsRequestHandler} from "../../../src/NiFiRequestSender/SystemDiagnosticsRequestHandler/SystemDiagnosticsRequestHandler";
-import {DefaultSystemDiagnosticsRequestHandler} from "../../../src/NiFiRequestSender/SystemDiagnosticsRequestHandler/DefaultSystemDiagnosticsRequestHandler";
 
 
 const chai = require('chai');
@@ -14,11 +14,11 @@ const expect = chai.expect;
 describe('DefaultSystemDiagnosticsRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let systemDiagnosticsRequestHandler: SystemDiagnosticsRequestHandler;
+    let systemDiagnosticsRequestHandler: ISystemDiagnosticsRequestHandler;
     before('init systemDiagnosticsRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        systemDiagnosticsRequestHandler = new DefaultSystemDiagnosticsRequestHandler(requestSender);
+        systemDiagnosticsRequestHandler = new SystemDiagnosticsRequestHandler(requestSender);
 
     });
 
