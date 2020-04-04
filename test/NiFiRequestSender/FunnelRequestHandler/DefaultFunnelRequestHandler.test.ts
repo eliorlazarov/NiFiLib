@@ -1,8 +1,8 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
-import {DefaultFunnelRequestHandler} from "../../../src/NiFiRequestSender/FunnelRequestHandler/DefaultFunnelRequestHandler";
 import {FunnelRequestHandler} from "../../../src/NiFiRequestSender/FunnelRequestHandler/FunnelRequestHandler";
+import {IFunnelRequestHandler} from "../../../src/NiFiRequestSender/FunnelRequestHandler/IFunnelRequestHandler";
 import {FunnelEntity} from "../../../src/NiFiObjects/Funnel/FunnelEntity";
 import {FunnelEntityGenerator} from "../../NiFiObjectGenerator/Funnel/FunnelEntityGenerator";
 
@@ -16,13 +16,13 @@ const expect = chai.expect;
 describe('DefaultFunnelRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let funnelRequestHandler: FunnelRequestHandler;
+    let funnelRequestHandler: IFunnelRequestHandler;
     let funnelEntity: FunnelEntity;
     let revision: RevisionType;
     before('init ControllerServiceRequestHandler', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        funnelRequestHandler = new DefaultFunnelRequestHandler(requestSender);
+        funnelRequestHandler = new FunnelRequestHandler(requestSender);
         funnelEntity = new FunnelEntityGenerator().generate();
         revision = funnelEntity.revision;
 
