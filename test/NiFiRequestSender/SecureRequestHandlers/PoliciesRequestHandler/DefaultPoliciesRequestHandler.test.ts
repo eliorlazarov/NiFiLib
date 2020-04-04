@@ -1,6 +1,6 @@
 import chaiAsPromised = require('chai-as-promised');
+import {IPoliciesRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/PoliciesRequestHandler/IPoliciesRequestHandler";
 import {PoliciesRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/PoliciesRequestHandler/PoliciesRequestHandler";
-import {DefaultPoliciesRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/PoliciesRequestHandler/DefaultPoliciesRequestHandler";
 import {RequestSender} from "../../../../src/NiFiRequestSender/RequestSender";
 import {AccessPolicyType} from "../../../../src/NiFiObjects/Types/SecureTypes/AccessPolicy/AccessPolicyType";
 import {AccessPolicyEntity} from "../../../../src/NiFiObjects/SecureObjects/AccessPolicy/AccessPolicyEntity";
@@ -18,11 +18,11 @@ const expect = chai.expect;
 describe('DefaultPoliciesRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let policiesRequestHandler: PoliciesRequestHandler;
+    let policiesRequestHandler: IPoliciesRequestHandler;
     before('init PoliciesRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        policiesRequestHandler = new DefaultPoliciesRequestHandler(requestSender);
+        policiesRequestHandler = new PoliciesRequestHandler(requestSender);
 
     });
 
