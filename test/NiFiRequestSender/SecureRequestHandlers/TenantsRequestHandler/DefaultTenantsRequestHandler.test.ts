@@ -1,7 +1,7 @@
 import chaiAsPromised = require('chai-as-promised');
 import {RequestSender} from "../../../../src/NiFiRequestSender/RequestSender";
 import {ITenantsRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/TenantsRequestHandler/ITenantsRequestHandler";
-import {DefaultTenantsRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/TenantsRequestHandler/TenantsRequestHandler";
+import {TenantsRequestHandler} from "../../../../src/NiFiRequestSender/SecureHandlers/TenantsRequestHandler/TenantsRequestHandler";
 import {RevisionType} from "../../../../src/NiFiObjects/Types/RevisionType";
 import {UserGroupEntityGenerator} from "../../../NiFiObjectGenerator/SecureGenerators/UserGroup/UserGroupEntityGenerator";
 import {UserGroupType} from "../../../../src/NiFiObjects/Types/SecureTypes/UserGroup/UserGroupType";
@@ -27,7 +27,7 @@ describe('DefaultTenantsRequestHandler Test', () => {
     before('init TenantsRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        tenantsRequestHandler = new DefaultTenantsRequestHandler(requestSender);
+        tenantsRequestHandler = new TenantsRequestHandler(requestSender);
 
     });
 

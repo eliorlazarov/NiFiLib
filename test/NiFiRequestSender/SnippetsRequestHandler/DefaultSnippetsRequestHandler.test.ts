@@ -3,8 +3,8 @@ import {SnippetGenerator} from "../../NiFiObjectGenerator/SnippetGenerator";
 import {Snippet} from "../../../src/NiFiObjects/Snippet";
 import {ProcessGroupEntityType} from "../../../src/NiFiObjects/Types/ProcessGroup/ProcessGroupEntityType";
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
+import {ISnippetsRequestHandler} from "../../../src/NiFiRequestSender/SnippetsRequestHandler/ISnippetsRequestHandler";
 import {SnippetsRequestHandler} from "../../../src/NiFiRequestSender/SnippetsRequestHandler/SnippetsRequestHandler";
-import {DefaultSnippetsRequestHandler} from "../../../src/NiFiRequestSender/SnippetsRequestHandler/DefaultSnippetsRequestHandler";
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
 import {GlobalOperations} from "../../globalOperations";
 
@@ -18,11 +18,11 @@ const expect = chai.expect;
 describe('DefaultSnippetsRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let snippetsRequestHandler: SnippetsRequestHandler;
+    let snippetsRequestHandler: ISnippetsRequestHandler;
     before('init snippetsRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        snippetsRequestHandler = new DefaultSnippetsRequestHandler(requestSender);
+        snippetsRequestHandler = new SnippetsRequestHandler(requestSender);
 
     });
 
