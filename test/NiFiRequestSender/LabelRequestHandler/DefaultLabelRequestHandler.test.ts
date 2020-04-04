@@ -1,8 +1,8 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
 import {RevisionType} from "../../../src/NiFiObjects/Types/RevisionType";
-import {DefaultLabelRequestHandler} from "../../../src/NiFiRequestSender/LabelRequestHandler/DefaultLabelRequestHandler";
-import {LabelRequestHandler} from "../../../src/NiFiRequestSender/LabelRequestHandler/LabelRequestHandler";
+import {ILabelRequestHandler} from "../../../src/NiFiRequestSender/LabelRequestHandler/LabelRequestHandler";
+import {ILabelRequestHandler} from "../../../src/NiFiRequestSender/LabelRequestHandler/ILabelRequestHandler";
 import {LabelEntity} from "../../../src/NiFiObjects/Label/LabelEntity";
 import {LabelEntityGenerator} from "../../NiFiObjectGenerator/Label/LabelEntityGenerator";
 
@@ -16,13 +16,13 @@ const expect = chai.expect;
 describe('DefaultLabelRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let labelRequestHandler: LabelRequestHandler;
+    let labelRequestHandler: ILabelRequestHandler;
     let labelEntity: LabelEntity;
     let revision: RevisionType;
     before('init LabelRequestHandler  ', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        labelRequestHandler = new DefaultLabelRequestHandler(requestSender);
+        labelRequestHandler = new LabelRequestHandler(requestSender);
         labelEntity = new LabelEntityGenerator().generate();
         revision = labelEntity.revision;
 
