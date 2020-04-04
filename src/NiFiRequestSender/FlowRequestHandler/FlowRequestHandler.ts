@@ -1,22 +1,45 @@
-import {AbstractRequestHandler} from "../AbstractRequestHandler";
+import {IFlowRequestHandler} from "./IFlowRequestHandler";
 import {ClusterSummaryType} from "../../NiFiObjects/Types/ClusterSummaryType";
 import {TemplateType} from "../../NiFiObjects/Types/TemplateType";
 import {ProcessGroupFlowType} from "../../NiFiObjects/Types/Flow/ProcessGroupFlow/ProcessGroupFlowType";
 import {ControllerServiceEntityType} from "../../NiFiObjects/Types/ControllerService/ControllerServiceEntityType";
+import { AbstractRequestHandler } from "../AbstractRequestHandler";
 
-export abstract class FlowRequestHandler extends AbstractRequestHandler {
-    public abstract async getRootPgId(): Promise<string>;
+export class FlowRequestHandler extends AbstractRequestHandler implements IFlowRequestHandler {
+    url = `/flow`;
 
-    public abstract async getClusterSummary(): Promise<ClusterSummaryType>
+    async changeProcessGroupState(state: string, processGroupId: string): Promise<object> {
+        let body = {
+            "id": processGroupId,
+            "state": state
+        };
+        return await this.Put(this.url + `/process-groups/${processGroupId}`, body) as object;
+    }
 
-    public abstract async getProcessGroupControllerServices(processGroupId: string): Promise<ControllerServiceEntityType[]>
+    async getClusterSummary(): Promise<ClusterSummaryType> {
+        let result = await this.Get(this.url + `/cluster/summary`);
+        return result['clusterSummary'] as ClusterSummaryType
 
-    public abstract async changeProcessGroupState(state: string, processGroupId: string): Promise<object>
+    }
 
-    public abstract async getTemplates(): Promise<TemplateType[]>
+    async getProcessGroupControllerServices(processGroupId: string): Promise<ControllerServiceEntityType[]> {
+        let result = await this.Get(this.url + `/process-groups/${processGroupId}/controller-services`);
+        return result['controllerServices'] as ControllerServiceEntityType[];
+    }
 
-    public abstract async getProcessGroupFlow(id: string): Promise<ProcessGroupFlowType>
+    async getProcessGroupFlow(id: string): Promise<ProcessGroupFlowType> {
+        let result = await this.Get(this.url + `/process-groups/${id}`);
+        return result['processGroupFlow'] as ProcessGroupFlowType;
+    }
 
-    // public abstract getProcessGroupStatus(ProcessGroupId: string, recursive?: string): Promise<>
+    async getRootPgId(): Promise<string> {
+        let result = await this.Get(this.url + `/process-groups/root`);
+        return result['body']['processGroupFlow']['id'] as string;
+    }
+
+    async getTemplates(): Promise<TemplateType[]> {
+        let result = await this.Get(this.url + `/templates`);
+        return result['templates'] as TemplateType[];
+    }
 
 }

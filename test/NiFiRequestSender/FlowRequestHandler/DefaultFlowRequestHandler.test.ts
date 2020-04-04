@@ -1,7 +1,7 @@
 import {RequestSender} from "../../../src/NiFiRequestSender/RequestSender";
 import chaiAsPromised = require('chai-as-promised');
+import {IFlowRequestHandler} from "../../../src/NiFiRequestSender/FlowRequestHandler/IFlowRequestHandler";
 import {FlowRequestHandler} from "../../../src/NiFiRequestSender/FlowRequestHandler/FlowRequestHandler";
-import {DefaultFlowRequestHandler} from "../../../src/NiFiRequestSender/FlowRequestHandler/DefaultFlowRequestHandler";
 import {GlobalOperations} from "../../globalOperations";
 import {ClusterSummaryGenerator} from "../../NiFiObjectGenerator/ClusterSummaryGenerator";
 import {ControllerServiceEntityGenerator} from "../../NiFiObjectGenerator/ControllerService/ControllerServiceEntityGenerator";
@@ -19,12 +19,12 @@ const expect = chai.expect;
 describe('DefaultFlowRequestHandler Test', () => {
     let mockUrl: string;
     let requestSender: RequestSender;
-    let flowRequestHandler: FlowRequestHandler;
+    let flowRequestHandler: IFlowRequestHandler;
 
     before('init FlowRequestHandler', () => {
         mockUrl = 'http://mockUrl:8080';
         requestSender = new RequestSender(mockUrl);
-        flowRequestHandler = new DefaultFlowRequestHandler(requestSender);
+        flowRequestHandler = new FlowRequestHandler(requestSender);
 
     });
 
