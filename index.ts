@@ -41,6 +41,7 @@ import {TenantsRequestHandler} from "./src/NiFiRequestSender/SecureHandlers/Tena
 import {SnippetsRequestHandler} from "./src/NiFiRequestSender/SnippetsRequestHandler/SnippetsRequestHandler";
 import {SystemDiagnosticsRequestHandler} from "./src/NiFiRequestSender/SystemDiagnosticsRequestHandler/SystemDiagnosticsRequestHandler";
 import {SecureRequestSender} from "./src/NiFiRequestSender/SecureRequestSender";
+import {RequestSender} from "./src/NiFiRequestSender/RequestSender"
 
 export {
     ConnectionBuilder,
@@ -88,5 +89,6 @@ export {
     TenantsRequestHandler,
     SnippetsRequestHandler,
     SystemDiagnosticsRequestHandler,
-    SecureRequestSender
+    SecureRequestSender,
+    RequestSender,
 }
